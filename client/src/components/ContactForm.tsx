@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -54,28 +56,29 @@ export default function ContactForm() {
     },
   });
 
+  const contactMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      return await apiRequest("POST", "/api/contact", data);
+    },
+    onSuccess: () => {
+      setIsSubmitted(true);
+      form.reset();
+      toast({
+        title: "Thank you for your interest!",
+        description: "We'll be in touch within 24 hours.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error sending message",
+        description: error.message || "Please try again or contact us directly at james@blincgames.com",
+        variant: "destructive",
+      });
+    },
+  });
+
   const onSubmit = (data: FormData) => {
-    const subject = `Investor Inquiry from ${data.fullName} - ${data.company}`;
-    const body = `
-Name: ${data.fullName}
-Email: ${data.email}
-Company: ${data.company}
-Role: ${data.role}
-Investment Interest: ${data.investmentInterest}
-Investment Range: ${data.investmentRange || 'Not specified'}
-
-Message:
-${data.message}
-    `.trim();
-
-    const mailtoLink = `mailto:james@blincgames.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
-    
-    setIsSubmitted(true);
-    toast({
-      title: "Thank you for your interest!",
-      description: "We'll be in touch within 24 hours.",
-    });
+    contactMutation.mutate(data);
   };
 
   if (isSubmitted) {
@@ -256,10 +259,10 @@ ${data.message}
                         type="submit"
                         size="lg"
                         className="w-full md:w-auto"
-                        disabled={form.formState.isSubmitting}
+                        disabled={contactMutation.isPending}
                         data-testid="button-submit-form"
                       >
-                        {form.formState.isSubmitting ? "Submitting..." : "Submit Inquiry"}
+                        {contactMutation.isPending ? "Submitting..." : "Submit Inquiry"}
                       </Button>
                     </div>
 
