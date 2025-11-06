@@ -305,7 +305,7 @@ export default function ContactForm() {
               <CardContent className="pt-6">
                 <h4 className="font-semibold mb-3">Schedule a Meeting</h4>
                 <a
-                  href="https://calendly.com/jamesblincgames"
+                  href="https://calendly.com/jamesblincgames/blinc-investors-partners"
                   target="_blank"
                   rel="noopener noreferrer"
                   data-testid="link-calendly"
