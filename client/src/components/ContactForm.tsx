@@ -297,6 +297,22 @@ ${data.message}
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardContent className="pt-6">
+                <h4 className="font-semibold mb-3">Schedule a Meeting</h4>
+                <a
+                  href="https://calendly.com/jamesblincgames"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="link-calendly"
+                >
+                  <Button className="w-full" variant="outline">
+                    Book a Call
+                  </Button>
+                </a>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
