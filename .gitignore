@@ -1,0 +1,17 @@
+*.mov
+*.mp4
+attached_assets/*.mov
+client/public/*.mov
+node_modules/
+dist/
+.env
+.env.local
+logs/
+*.log
+.DS_Store
+/tmp/
+*.cache
+.replit
+replit.nix
+.config/
+.upm/
