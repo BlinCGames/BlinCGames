@@ -40,13 +40,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <p>${data.message.replace(/\n/g, '<br>')}</p>
       `;
 
-      await resend.emails.send({
+      const { data: emailData, error: emailError } = await resend.emails.send({
         from: 'BlinC Games Contact Form <onboarding@resend.dev>',
         to: 'james@blincgames.com',
         replyTo: data.email,
         subject: `Investor Inquiry from ${data.fullName} - ${data.company}`,
         html: emailHtml,
       });
+
+      if (emailError) {
+        console.error("Resend API error:", emailError);
+        return res.status(500).json({ 
+          message: "Failed to send email. Please try again or contact us directly." 
+        });
+      }
 
       res.json({ success: true, message: "Email sent successfully" });
     } catch (error) {
