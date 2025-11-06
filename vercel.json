@@ -1,15 +1,16 @@
 {
   "version": 2,
-  "builds": [
+  "outputDirectory": "dist/public",
+  "buildCommand": "npm run build",
+  "framework": null,
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
-      "src": "/(.*)",
-      "dest": "dist/index.js"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
